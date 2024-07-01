@@ -1,0 +1,55 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+header {
+    background: #007BFF;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+.idea-form {
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 500px;
+    border: 1px solid #ccc;
+}
+.idea-form input[type="text"],
+.idea-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.idea-form input[type="submit"] {
+    background: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.idea-form input[type="submit"]:hover {
+    background: #0056b3;
+}
+.idea-graph {
+    margin: 20px auto;
+    max-width: 600px;
+    padding: 20px;
+}
+@media screen and (max-width: 768px) {
+    header {
+        padding: 10px;
+    }
+    .idea-form,
+    .idea-graph {
+        margin: 10px;
+        padding: 15px;
+    }
+    .idea-form input[type="submit"] {
+        width: 100%;
+    }
+}
