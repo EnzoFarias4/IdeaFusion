@@ -1,1 +1,1 @@
-# IdeaFusion
+IdeaFusion is a project centered around collecting and sharing innovative ideas. It leverages a Flask server for backend operations and employs PostgreSQL for data storage, managed with SQLAlchemy for ORM capabilities. The application focuses on creating, viewing, and managing ideas through defined routes. Additionally, it integrates middleware for efficient JSON parsing, ensuring smooth data exchange. IdeaFusion runs on port 5000, offering a dedicated environment for users to collaborate and nurture creativity.
