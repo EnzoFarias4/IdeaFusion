@@ -2,8 +2,12 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
 import os
 from dotenv import load_dotenv
+import logging
 
 load_dotenv()
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 DATABASE_CONNECTION_URL = os.getenv("DATABASE_CONNECTION_URL")
 
@@ -21,6 +25,9 @@ class CreativeIdea(db.Model):
         secondaryjoin='CreativeIdea.idea_id==idea_linkage.c.related_idea_id',
         backref='related_connections'
     )
+
+    def log_creation(self):
+        logger.info(f"New creative idea created: {self.idea_title}")
 
 idea_linkage = db.Table('idea_linkage',
     db.Column('initiator_idea_id', db.Integer, db.ForeignKey('creative_ideas.idea_id'), primary_key=True),
