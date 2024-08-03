@@ -3,6 +3,7 @@ import json
 import matplotlib.pyplot as plt
 import networkx as nx
 from dotenv import load_dotenv
+import functools
 
 load_dotenv()
 DATABASE_URL = os.getenv("DATABASE_URL")
@@ -26,11 +27,12 @@ def analyze_ideas(ideas):
         "analysis": "This is a simplistic analysis placeholder."
     }
 
+@functools.lru_cache(maxsize=None)  
 def find_connections(ideas, idea_id):
     for idea in ideas:
         if idea["id"] == idea_id:
-            return [conn for conn in idea["connections"]]
-    return []
+            return tuple(conn for conn in idea["connections"])  
+    return tuple()
 
 def generate_visual_data(ideas):
     G = nx.Graph()
