@@ -16,6 +16,7 @@ def fetch_ideas_from_db():
         {"id": 4, "idea": "Battery Storage", "connections": [2]}
     ]
 
+@functools.lru_cache(maxsize=None)
 def analyze_ideas(ideas):
     unique_ideas = set()
     for idea in ideas:
@@ -39,9 +40,11 @@ def generate_visual_data(ideas):
     for idea in ideas:
         G.add_node(idea["idea"])
         for connection_id in idea["connections"]:
-            connected_idea = next((item for item in ideas if item["id"] == connection_id), None)
-            if connected_idea:
-                G.add_edge(idea["idea"], connected_idea["idea"])
+            connected_idea_ids = find_connections(ideas, connection_id)
+            for connected_idea_id in connected_idea_ids:
+                connected_idea = next((item for item in ideas if item["id"] == connected_idea_id), None)
+                if connected_idea:
+                    G.add_edge(idea["idea"], connected_idea["idea"])
     
     pos = nx.spring_layout(G)
     nx.draw(G, pos, with_labels=True, node_color="lightblue", edge_color="gray")
@@ -59,7 +62,7 @@ def export_processing_functions():
 
 if __name__ == "__main__":
     ideas = fetch_ideas_from_db()
-    analysis = analyze_ideas(ideas)
+    analysis = analyze_ideas(tuple(map(json.dumps, ideas)))  # Ensuring hashability for caching
     print(json.dumps(analysis, indent=2))
     generate_visual_data(ideas)
     exported_functions = export_processing_functions()
