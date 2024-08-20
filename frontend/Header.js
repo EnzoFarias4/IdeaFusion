@@ -1,38 +1,39 @@
+// ErrorBoundary.js
 import React, { Component } from 'react';
 
-class ErrorBoundary extends Component {
+class ErrorBoundaryWrapper extends Component {
     constructor(props) {
         super(props);
-        this.state = { hasError: false };
+        this.state = { hasEncounteredError: false };
     }
 
-    static getDerivedStateFromError(error) {
-        // Update state so the next render will show the fallback UI.
-        return { hasError: true };
+    static getErrorStateFromError(error) {
+        return { hasEncounteredError: true };
     }
 
-    componentDidCatch(error, errorInfo) {
-        // You can log the error to an error reporting service
+    catchErrorDetails(error, errorInfo) {
         console.log(error, errorInfo);
     }
 
     render() {
-        if (this.state.hasError) {
-            // You can render any custom fallback UI
-            return <h1>Something went wrong.</h1>;
+        if (this.state.hasEncounteredError) {
+            return <h1>Oops, something went wrong.</h1>;
         }
 
         return this.props.children; 
     }
 }
 
+export default ErrorBoundaryWrapper;
+
+// Header.js
 import React from 'react';
-import ErrorBoundary from './ErrorBoundary'; // Assume ErrorBoundary is saved in the same directory
+import ErrorBoundaryWrapper from './ErrorBoundaryWrapper';
 import { Link } from 'react-router-dom';
 
-const Header = () => {
+const NavigationHeader = () => {
     return (
-        <ErrorBoundary>
+        <ErrorBoundaryWrapper>
             <header>
                 <nav>
                     <ul>
@@ -51,8 +52,8 @@ const Header = () => {
                     </ul>
                 </nav>
             </header>
-        </ErrorBoundary>
+        </ErrorBoundaryWrapper>
     );
 };
 
-export default Header;
+export default NavigationHeader;
