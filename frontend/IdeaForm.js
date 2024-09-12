@@ -5,9 +5,14 @@ const IdeaForm = ({ onSubmit, initialData }) => {
   const [description, setDescription] = useState(initialData?.description || '');
   const [error, setError] = useState('');
 
+  const outputLog = (message) => {
+    console.log(`[IdeaForm Log]: ${message}`);
+  };
+
   const validateForm = () => {
     if (!title || !description) {
       setError('Both title and description are required.');
+      outputLog('Validation failed: Both title and description are required.');
       return false;
     }
     return true;
@@ -15,6 +20,8 @@ const IdeaForm = ({ onSubmit, initialData }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    outputLog('Submitting the form.');
 
     if (!validateForm()) return;
 
@@ -24,6 +31,7 @@ const IdeaForm = ({ onSubmit, initialData }) => {
     };
 
     onSubmit(ideaData);
+    outputLog('Form submitted successfully with data: ' + JSON.stringify(ideaData));
   };
 
   return (
@@ -36,7 +44,10 @@ const IdeaForm = ({ onSubmit, initialData }) => {
           name="title"
           id="title"
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e) => {
+            setTitle(e.target.value);
+            outputLog(`Title changed: ${e.target.value}`);
+          }}
           required
         />
       </div>
@@ -47,7 +58,10 @@ const IdeaForm = ({ onSubmit, initialData }) => {
           id="description"
           rows="5"
           value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={(e) => {
+            setDescription(e.target.value);
+            outputLog(`Description changed: ${e.target.value}`);
+          }}
           required
         ></textarea>
       </div>
