@@ -1,26 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 
 const IdeaForm = ({ onSubmit, initialData }) => {
   const [title, setTitle] = useState(initialData?.title || '');
   const [description, setDescription] = useState(initialData?.description || '');
   const [error, setError] = useState('');
 
-  const outputLog = (message) => {
+  const outputLog = useCallback((message) => {
     console.log(`[IdeaForm Log]: ${message}`);
-  };
+  }, []); 
 
-  const validateForm = () => {
+  const validateForm = useCallback(() => {
     if (!title || !description) {
       setError('Both title and description are required.');
       outputLog('Validation failed: Both title and description are required.');
       return false;
     }
     return true;
-  };
+  }, [title, description, outputLog]); 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = useCallback((e) => {
     e.preventDefault();
-
     outputLog('Submitting the form.');
 
     if (!validateForm()) return;
@@ -32,7 +31,7 @@ const IdeaForm = ({ onSubmit, initialData }) => {
 
     onSubmit(ideaData);
     outputLog('Form submitted successfully with data: ' + JSON.stringify(ideaData));
-  };
+  }, [title, description, validateForm, onSubmit, outputLog]); 
 
   return (
     <form onSubmit={handleSubmit}>
