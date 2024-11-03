@@ -4,26 +4,21 @@ import './IdeaGraph.css';
 
 const IdeaGraph = ({ fetchData }) => {
     const svgRef = useRef(null);
-    const [data, setData] = useState({ ideas: [], links: [] });
 
     useEffect(() => {
-        const getData = async () => {
+        const getDataAndUpdateGraph = async () => {
             const { ideas, links } = await fetchData();
-            setData({ ideas, links });
+            if (!ideas.length || !links.length) return;
+
+            const svg = d3.select(svgRef.current);
+            svg.selectAll('*').remove();
+
+            const width = 960;
+            const height = 600;
         };
 
-        getData();
+        getDataAndUpdateGraph();
     }, [fetchData]);
-
-    useEffect(() => {
-        if (!data.ideas.length || !data.links.length) return;
-
-        const width = 960;
-        const height = 600;
-
-        d3.select(svgRef.current).selectAll('*').remove();
-
-    }, [data.ideas, data.links]); // Re-run when data changes
 
     return <svg ref={svgRef}></svg>;
 };
