@@ -21,8 +21,6 @@ def analyze_ideas(ideas):
     unique_ideas = set()
     for idea in ideas:
         unique_ideas.add(idea["idea"])
-        for connected_idea_id in idea["connections"]:
-            pass
     return {
         "total_ideas": len(unique_ideas),
         "analysis": "This is a simplistic analysis placeholder."
@@ -62,7 +60,6 @@ def export_processing_functions():
 
 if __name__ == "__main__":
     ideas = fetch_ideas_from_db()
-    analysis = analyze_ideas(tuple(map(json.dumps, ideas)))  # Ensuring hashability for caching
+    analysis = analyze_ideas(tuple(map(json.dumps, ideas)))  
     print(json.dumps(analysis, indent=2))
     generate_visual_data(ideas)
-    exported_functions = export_processing_functions()
