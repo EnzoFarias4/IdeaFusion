@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import './IdeaGraph.css';
 
@@ -6,18 +6,23 @@ const IdeaGraph = ({ fetchData }) => {
     const svgRef = useRef(null);
 
     useEffect(() => {
-        const getDataAndUpdateGraph = async () => {
-            const { ideas, links } = await fetchData();
-            if (!ideas.length || !links.length) return;
+        const updateGraphWithData = async () => {
+            const graphData = await fetchData();
+            const { ideas, links } = graphData;
+            if (ideas.length === 0 || links.length === 0) {
+                return;
+            }
 
-            const svg = d3.select(svgRef.current);
-            svg.selectAll('*').remove();
+            const svgElement = d3.select(svgRef.current);
+            // Clear existing SVG content to ensure a fresh graph.
+            svgElement.selectAll('*').remove();
 
-            const width = 960;
-            const height = 600;
+            // Graph dimensions, consider making these dynamic or props.
+            const graphWidth = 960;
+            const graphHeight = 600;
         };
 
-        getDataAndUpdateGraph();
+        updateGraphWithData();
     }, [fetchData]);
 
     return <svg ref={svgRef}></svg>;
